@@ -1,41 +1,39 @@
-let posX, posY;
-let velX, velY;
-let diametro;
-let rad;
-let fondo;
+let particulas = [];
 
 function setup() {
   createCanvas(windowWidth, windowHeight);
-  fondo = random(255), random(255), random(255);
-  rad = ceil(random(10, 50));
-  diam = rad * 2;
-
-  posX = random(rad, width - rad);
-  posY = random(rad, height - rad);
-
-  //velX = random(-10, 10);
-  //velY = random(-10, 10);
-  velX = 5;
-  velY = 5;
 }
 
 function draw() {
-  background(fondo);
-  fill(255);
-  noStroke();
+  background(20);
+  let nuevaParticula = new Particula(mouseX, mouseY);
+  particulas.push(nuevaParticula);
 
-  posX += velX;
-  posY += velY;
-
-  if (posX > width - rad || posX < rad) {
-    velX *= -1;
-    fondo = color(random(255), random(255), random(255));
+  for (let i = 0; i < particulas.length; i++) {
+    particulas[i].update();
+    particulas[i].display();
   }
 
-  if (posY > height - rad || posY < rad) {
-    velY *= -1;
-    fondo = color(random(255), random(255), random(255));
+  // for (let i = 0; i < particulas.length; i++) {
+  //   if (particulas[i].estaViva) {
+  //   } else {
+  //     particulas.splice(i, 1);
+  //   }
+  // }
+  particulas = particulas.filter((pelota) => pelota.estaViva);
+
+  noFill();
+  stroke(252, 99, 145);
+  strokeWeight(1);
+
+  for (let i = 0; i < particulas.length - 1; i++) {
+    line(
+      particulas[i].posX,
+      particulas[i].posY,
+      particulas[i + 1].posX,
+      particulas[i + 1].posY
+    );
   }
 
-  circle(posX, posY, diam);
+  console.log(particulas.length);
 }
